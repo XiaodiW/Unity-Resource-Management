@@ -6,33 +6,33 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Networking;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UI;
 
 public class GameController : MonoBehaviour {
     public Toggle isUnloadUnusedAssets;
     public Toggle isGCCollect;
+    public Toggle isUnloadRelease;
     private Skybox _skybox;
     private AssetBundle assetBundle;
+    private AsyncOperationHandle<Material> addressableLoad;
     private int index;
-    private string skyboxName = "skybox";
 
     private void Start() {
         _skybox = Camera.main.GetComponent<Skybox>();
-        
-        // assetBundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath,"skybox0"));
-        //
-        // if (assetBundle == null) {
-        //     Debug.Log("Failed to load AssetBundle!");
-        //     return;
-        // }
-        //
-        // //load the first skybox
-        // var material = assetBundle.LoadAsset<Material>(skyboxName + "0");
-        // _skybox.material = material;
+    }
+    
+    public void ToNextSkyBox() {
+        if(index > 5) index = 0;
+        var path = "skybox" + index;
+        var material = Resources.Load<Material>(path);
+        _skybox.material = material;
+        index++;
+        ToReleaseMemory(isUnloadUnusedAssets.isOn, isGCCollect.isOn);
     }
     
     public void ToNextSkyBoxBySteamingAssets() {
-        if(assetBundle != null) {
+        if(assetBundle != null && isUnloadRelease.isOn) {
             assetBundle.Unload(true);
             print("assetBundle.Unload(true)");
         }
@@ -47,22 +47,14 @@ public class GameController : MonoBehaviour {
         ToReleaseMemory(isUnloadUnusedAssets.isOn, isGCCollect.isOn);
     }
     
-    
-    public void ToNextSkyBox() {
-        if(index > 5) index = 0;
-        var path = "skybox" + index;
-        var material = Resources.Load<Material>(path);
-        _skybox.material = material;
-        index++;
-        ToReleaseMemory(isUnloadUnusedAssets.isOn, isGCCollect.isOn);
-    }
-    
     public void ToNextSkyBoxByAddressableAssets() {
+        if(addressableLoad.Status == AsyncOperationStatus.Succeeded && isUnloadRelease.isOn)Addressables.Release(addressableLoad);
         if(index > 5) index = 0;
-        Addressables.LoadAssetAsync<Material>("skybox" + index).Completed += OnLoadDone;
+        addressableLoad = Addressables.LoadAssetAsync<Material>("skybox" + index);
+        addressableLoad.Completed += OnLoadDone;
     }
 
-    private void OnLoadDone(UnityEngine.ResourceManagement.AsyncOperations.AsyncOperationHandle<Material> mat) {
+    private void OnLoadDone(AsyncOperationHandle<Material> mat) {
         _skybox.material = mat.Result;
         index++;
         ToReleaseMemory(isUnloadUnusedAssets.isOn, isGCCollect.isOn);

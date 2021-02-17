@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: skybox
+  m_EditorClassIdentifier: 
+  m_GroupName: skybox
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 430acad9358cd49db8108f475a32f660
+  m_SerializeEntries:
+  - m_GUID: e1e5746fe5f0cbb41975c8e5c89bef7b
+    m_Address: skybox0
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 260c299db324e7442b7a0dc39190fdf5
+    m_Address: skybox1
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: fe0d3df9fbcef914cb154512815a02c3
+    m_Address: skybox2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 2e11feafe2e2ab84f835c236f8105978
+    m_Address: skybox3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 7644841976c2cde45abded5243ee97f2
+    m_Address: skybox4
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  - m_GUID: 0574003c7cae72b4481e4e188c1b18fb
+    m_Address: skybox5
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    m_MainAsset: {fileID: 0}
+    m_TargetAsset: {fileID: 0}
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: f047a34351070412fae9934aa5b36bdd, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 3cf5b92e7383a4e0bb1f09c30cc95ce9, type: 2}
+    - {fileID: 11400000, guid: ac0c6c8372c284e788c1cb762530d85b, type: 2}

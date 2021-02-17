@@ -1,0 +1,22 @@
+ManifestFileVersion: 0
+CRC: 1837639460
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: skybox0
+      Dependencies: {}
+    Info_1:
+      Name: skybox1
+      Dependencies: {}
+    Info_2:
+      Name: skybox2
+      Dependencies: {}
+    Info_3:
+      Name: skybox3
+      Dependencies: {}
+    Info_4:
+      Name: skybox4
+      Dependencies: {}
+    Info_5:
+      Name: skybox5
+      Dependencies: {}

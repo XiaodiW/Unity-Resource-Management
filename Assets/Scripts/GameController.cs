@@ -17,11 +17,17 @@ public class GameController : MonoBehaviour {
     private AssetBundle assetBundle;
     private AsyncOperationHandle<Material> addressableLoad;
     private int index;
+    private string onGUIText = String.Empty;
+    public Text loading;
 
     private void Start() {
         _skybox = Camera.main.GetComponent<Skybox>();
     }
-    
+
+    private void OnGUI() {
+        GUILayout.TextArea(onGUIText);
+    }
+
     public void ToNextSkyBox() {
         if(index > 5) index = 0;
         var path = "skybox" + index;
@@ -48,16 +54,33 @@ public class GameController : MonoBehaviour {
     }
     
     public void ToNextSkyBoxByAddressableAssets() {
-        if(addressableLoad.Status == AsyncOperationStatus.Succeeded && isUnloadRelease.isOn)Addressables.Release(addressableLoad);
         if(index > 5) index = 0;
         addressableLoad = Addressables.LoadAssetAsync<Material>("skybox" + index);
+        StartCoroutine(OnLoad());
         addressableLoad.Completed += OnLoadDone;
+    }
+    IEnumerator OnLoad() {
+        while(addressableLoad.PercentComplete <1f) {
+            loading.text = addressableLoad.PercentComplete.ToString("P");
+            print($"{addressableLoad.PercentComplete.ToString("P")}");
+            yield return null;
+        }
     }
 
     private void OnLoadDone(AsyncOperationHandle<Material> mat) {
+        StartCoroutine(ReleaseAddessableAssets());
         _skybox.material = mat.Result;
         index++;
         ToReleaseMemory(isUnloadUnusedAssets.isOn, isGCCollect.isOn);
+    }
+
+    IEnumerator ReleaseAddessableAssets() {
+        // if(addressableLoad.IsDone && isUnloadRelease.isOn)Addressables.Release(addressableLoad);
+        if(_skybox.material != null && isUnloadRelease.isOn) {
+            onGUIText += "\n Do Addressables.Release(_skybox.material)";
+            Addressables.Release(_skybox.material);
+        }
+        yield return new WaitForSeconds(0);
     }
 
     IEnumerator wait2second() {
@@ -78,11 +101,11 @@ public class GameController : MonoBehaviour {
 
     public void ToReleaseMemory(bool isUnloadUnusedAssets, bool isGCCollect) {
         if(isUnloadUnusedAssets) {
-            print("DO Resources.UnloadUnusedAssets()");
+            onGUIText += "\nDO Resources.UnloadUnusedAssets()";
             Resources.UnloadUnusedAssets();
         }
         if(isGCCollect) {
-            print("DO GC.Collect()");
+            onGUIText += "\nDO GC.Collect()";
             GC.Collect();
         }
     }
